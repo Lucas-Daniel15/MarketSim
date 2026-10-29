@@ -1,0 +1,22 @@
+[
+ {"id":"TECH",
+ "nome":"TechNova",
+ "setor":"Tecnologia",
+ "precoCentavos":12000,
+ "tendencia":0.002,
+ "volatilidade":0.045
+},
+ {"id":"AGRO",
+ "nome":"AgroMax",
+ "setor":"Agronegócio",
+ "precoCentavos":8500,
+ "tendencia":0.001,
+ "volatilidade":0.03
+},
+ {"id":"ENER",
+ "nome":"EnergiaVerde",
+ "setor":"Energia",
+ "precoCentavos":6400,
+ "tendencia":0.0015,
+ "volatilidade":0.02}
+]

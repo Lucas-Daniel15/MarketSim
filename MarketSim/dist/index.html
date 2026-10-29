@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <meta
+            name="description"
+            content="MarketSim: aprenda experimentando um mercado de ações fictício."
+        />
+        <title>MarketSim — Seu laboratório de investimentos</title>
+        <link rel="stylesheet" href="./css/style.css" />
+        <script type="module" src="./js/app.js"></script>
+    </head>
+    <body>
+        <aside class="sidebar">
+            <a class="brand" href="#dashboard">
+                <span class="brand-icon">↗</span> Market<span>Sim</span></a
+            >
+            <div class="workspace-label">SEU LABORATÓRIO FINANCEIRO</div>
+            <nav aria-label="Navegação principal">
+                <button data-view="dashboard" class="active">
+                    <span>▦</span> Visão geral</button
+                ><button data-view="mercado">
+                    <span>↗</span> Mercado <small>3</small></button
+                ><button data-view="carteira"><span>▣</span> Carteira</button
+                ><button data-view="historico"><span>◷</span> Histórico</button>
+            </nav>
+            <div class="sidebar-bottom">
+                <div class="simulation-label"><i></i> AMBIENTE SIMULADO</div>
+                <p>Experimente estratégias.<br />Aprenda a cada dia.</p>
+                <button id="como-funciona" class="help-button">
+                    ⓘ Como funciona
+                </button>
+                <div class="student">
+                    <b>MS</b>
+                    <div>
+                        Projeto Programação II<small
+                            >IFMT · Pontes e Lacerda</small
+                        >
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <div class="app">
+            <header class="topbar">
+                <div>
+                    <span class="breadcrumb">Workspace</span
+                    ><span class="slash">/</span
+                    ><span id="breadcrumb-view">Visão geral</span>
+                </div>
+                <div class="top-actions">
+                    <span class="day"><i></i> Dia <b id="dia-atual">1</b></span
+                    ><button class="primary" id="avancar-dia" disabled>
+                        Avançar dia <span>→</span>
+                    </button>
+                </div>
+            </header>
+            <main>
+                <div
+                    id="aviso-persistencia"
+                    class="warning"
+                    hidden
+                    role="status"
+                ></div>
+                <div id="fatal" class="warning" hidden role="alert"></div>
+                <section id="tela-dashboard" class="tela">
+                    <div class="page-heading">
+                        <div>
+                            <div class="eyebrow">
+                                CADA DECISÃO, UM APRENDIZADO
+                            </div>
+                            <h1>Seu mercado. Suas escolhas.</h1>
+                            <p>
+                                Acompanhe seus investimentos e descubra seu
+                                próximo movimento.
+                            </p>
+                        </div>
+                        <span class="tag">✦ Dinheiro 100% virtual</span>
+                    </div>
+                    <div class="metrics">
+                        <article class="metric featured">
+                            <div>Patrimônio total <span>↗</span></div>
+                            <strong id="patrimonio-total">R$ 10.000,00</strong
+                            ><small id="patrimonio-retorno"
+                                >Seu ponto de partida</small
+                            >
+                        </article>
+                        <article class="metric">
+                            <div>Saldo disponível <span>◈</span></div>
+                            <strong id="saldo-disponivel">R$ 10.000,00</strong
+                            ><small>Disponível para investir</small>
+                        </article>
+                        <article class="metric">
+                            <div>Valor em ações <span>▥</span></div>
+                            <strong id="valor-acoes">R$ 0,00</strong
+                            ><small id="posicoes-count"
+                                >Nenhuma posição aberta</small
+                            >
+                        </article>
+                        <article class="metric">
+                            <div>Resultado total <span>∿</span></div>
+                            <strong id="resultado-total">R$ 0,00</strong
+                            ><small>Em relação ao capital inicial</small>
+                        </article>
+                    </div>
+                    <div class="overview-grid">
+                        <article class="panel chart-panel">
+                            <div class="panel-heading">
+                                <div>
+                                    <h2>Evolução do patrimônio</h2>
+                                    <p>Uma visão da sua jornada no mercado</p>
+                                </div>
+                                <div class="segmented" id="periodos">
+                                    <button data-period="7">7 dias</button
+                                    ><button data-period="30">30 dias</button
+                                    ><button class="selected" data-period="0">
+                                        Tudo
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="chart-key">
+                                <i></i> Patrimônio
+                                <span>Capital inicial: R$ 10.000</span>
+                            </div>
+                            <div
+                                id="grafico-patrimonio"
+                                class="main-chart"
+                            ></div>
+                            <p id="chart-note" class="chart-note"></p>
+                        </article>
+                        <article class="panel allocation-panel">
+                            <h2>Distribuição da carteira</h2>
+                            <p>Onde está seu patrimônio</p>
+                            <div id="allocation"></div>
+                        </article>
+                    </div>
+                    <div class="panel market-panel">
+                        <div class="panel-heading">
+                            <div>
+                                <h2>De olho no mercado</h2>
+                                <p>
+                                    Três empresas fictícias. Novas
+                                    possibilidades a cada dia.
+                                </p>
+                            </div>
+                            <button class="text-button" data-view="mercado">
+                                Explorar mercado ↗
+                            </button>
+                        </div>
+                        <div id="mercado-resumo" class="table-scroll"></div>
+                    </div>
+                    <div class="tip">
+                        <span>✧</span>
+                        <div>
+                            <b>Seu primeiro movimento começa aqui</b>
+                            <p>
+                                Escolha uma empresa, compre ações e avance o dia
+                                para acompanhar o resultado.
+                            </p>
+                        </div>
+                        <button data-view="mercado">Investir agora →</button>
+                    </div>
+                </section>
+                <section id="tela-mercado" class="tela" hidden>
+                    <div class="page-heading">
+                        <div>
+                            <div class="eyebrow">EXPLORE AS POSSIBILIDADES</div>
+                            <h1>Mercado</h1>
+                            <p>
+                                Conheça as empresas e negocie pelo preço do dia.
+                            </p>
+                        </div>
+                        <span class="tag">● Cotações simuladas</span>
+                    </div>
+                    <div class="toolbar">
+                        <label class="search"
+                            >⌕
+                            <input
+                                id="busca-empresa"
+                                placeholder="Buscar empresa ou código"
+                                aria-label="Buscar empresa" /></label
+                        ><select id="filtro-setor" aria-label="Filtrar setor">
+                            <option value="">Todos os setores</option>
+                            <option>Tecnologia</option>
+                            <option>Agronegócio</option>
+                            <option>Energia</option>
+                        </select>
+                    </div>
+                    <p id="mensagem-mercado" class="muted"></p>
+                    <div id="lista-empresas" class="grade-empresas"></div>
+                    <div class="info-strip">
+                        ⓘ Os preços variam ao avançar o dia. Todas as empresas e
+                        operações são fictícias.
+                    </div>
+                </section>
+                <section id="tela-carteira" class="tela" hidden>
+                    <div class="page-heading">
+                        <div>
+                            <div class="eyebrow">SEUS INVESTIMENTOS</div>
+                            <h1>Carteira</h1>
+                            <p>Entenda suas posições, custos e resultados.</p>
+                        </div>
+                        <button class="primary" data-view="mercado">
+                            Comprar ações ↗
+                        </button>
+                    </div>
+                    <div id="resumo-carteira" class="metrics three"></div>
+                    <article class="panel">
+                        <div class="panel-heading">
+                            <h2>Minhas posições</h2>
+                            <span class="tag">Preço médio de aquisição</span>
+                        </div>
+                        <div id="corpo-carteira" class="table-scroll"></div>
+                    </article>
+                </section>
+                <section id="tela-historico" class="tela" hidden>
+                    <div class="page-heading">
+                        <div>
+                            <div class="eyebrow">CADA MOVIMENTO CONTA</div>
+                            <h1>Histórico de operações</h1>
+                            <p>
+                                Reveja as decisões tomadas ao longo da
+                                simulação.
+                            </p>
+                        </div>
+                        <button id="exportar-csv" class="secondary">
+                            ↓ Exportar CSV
+                        </button>
+                    </div>
+                    <div class="toolbar">
+                        <select id="filtro-tipo" aria-label="Filtrar operações">
+                            <option value="">Todas as operações</option>
+                            <option value="compra">Compras</option>
+                            <option value="venda">Vendas</option></select
+                        ><span id="total-operacoes" class="muted"></span>
+                    </div>
+                    <article class="panel">
+                        <div id="corpo-historico" class="table-scroll"></div>
+                    </article>
+                </section>
+                <footer>
+                    <span id="save-status">○ Carregando simulação…</span>
+                    <div>
+                        <button id="exportar">↓ Backup JSON</button
+                        ><button id="importar">↑ Restaurar</button
+                        ><button id="reiniciar-jogo">
+                            Reiniciar simulação
+                        </button>
+                    </div>
+                </footer>
+                <input
+                    type="file"
+                    id="arquivo-importacao"
+                    accept=".json,application/json"
+                    hidden
+                />
+            </main>
+        </div>
+        <dialog id="trade-dialog">
+            <form id="trade-form">
+                <div class="dialog-heading">
+                    <span class="eyebrow">NOVA OPERAÇÃO</span
+                    ><button
+                        type="button"
+                        class="close"
+                        data-close
+                        aria-label="Fechar"
+                    >
+                        ×
+                    </button>
+                </div>
+                <h2 id="trade-title"></h2>
+                <p id="trade-company" class="muted"></p>
+                <div class="segmented trade-tabs">
+                    <button type="button" data-trade-type="compra">
+                        Comprar</button
+                    ><button type="button" data-trade-type="venda">
+                        Vender
+                    </button>
+                </div>
+                <div class="trade-facts">
+                    <div>Preço por ação<strong id="trade-price"></strong></div>
+                    <div id="trade-available"></div>
+                </div>
+                <label for="quantidade">Quantidade de ações</label>
+                <div class="quantity">
+                    <input
+                        id="quantidade"
+                        type="number"
+                        min="1"
+                        step="1"
+                        value="1"
+                        required
+                    /><button id="maximo" type="button">Máximo</button>
+                </div>
+                <div class="trade-total">
+                    <span>Total da operação</span
+                    ><strong id="trade-total"></strong>
+                </div>
+                <p id="trade-error" class="negative" role="alert"></p>
+                <button
+                    class="primary full"
+                    type="submit"
+                    id="confirmar-operacao"
+                >
+                    Confirmar compra
+                </button>
+                <p class="dialog-note">
+                    Sem taxas · Dinheiro virtual · Preço do dia
+                </p>
+            </form>
+        </dialog>
+        <dialog id="confirm-dialog">
+            <h2 id="confirm-title"></h2>
+            <p id="confirm-description"></p>
+            <div class="dialog-actions">
+                <button class="secondary" data-close>Cancelar</button
+                ><button class="primary" id="confirm-action">Confirmar</button>
+            </div>
+        </dialog>
+        <dialog id="help-dialog">
+            <div class="dialog-heading">
+                <span class="eyebrow">BEM-VINDO AO SEU LABORATÓRIO</span
+                ><button class="close" data-close aria-label="Fechar">×</button>
+            </div>
+            <h2>Aprenda fazendo.</h2>
+            <ol class="help-list">
+                <li>
+                    <b>Comece com R$ 10.000 virtuais.</b>
+                    <p>Escolha uma das três empresas no Mercado.</p>
+                </li>
+                <li>
+                    <b>Compre, observe e venda.</b>
+                    <p>
+                        Negocie quantidades inteiras. O preço médio acompanha o
+                        custo das suas compras.
+                    </p>
+                </li>
+                <li>
+                    <b>Você controla o tempo.</b>
+                    <p>
+                        Avançar dia altera as cotações usando tendência e
+                        volatilidade, com variação limitada a ±10%, piso de R$ 1
+                        e teto didático de R$ 1 milhão por ação.
+                    </p>
+                </li>
+                <li>
+                    <b>Acompanhe seu resultado.</b>
+                    <p>
+                        Patrimônio = saldo + ações. Lucro realizado vem de
+                        vendas; o não realizado depende dos preços atuais.
+                    </p>
+                </li>
+            </ol>
+            <p class="info-strip">
+                O progresso fica neste navegador. Use Backup JSON para levar a
+                partida a outro computador. A simulação não representa o mercado
+                real.
+            </p>
+        </dialog>
+        <div id="toast" role="status" hidden></div>
+    </body>
+</html>
